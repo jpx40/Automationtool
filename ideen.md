@@ -6,7 +6,9 @@
 
 - Nushell: https://www.nushell.sh/
 - rhai https://rhai.rs/book/about/non-design.html#what-rhai-isnt
-- lua https://github.com/mlua-rs/rlua/ https://www.lua.org/pil/contents.html
+- https://www.lua.org/pil/contents.html
+  -   https://github.com/mlua-rs/mlua
+  -   lua https://github.com/mlua-rs/rlua/
 
 
 
