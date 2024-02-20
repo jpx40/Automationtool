@@ -43,6 +43,10 @@
 ### RPC
 - https://github.com/hyperium/tonic
 - https://github.com/cloudwego/volo
+
+
+### Kann als beispiel dienen
+- https://github.com/pyinfra-dev/pyinfra
   
 
 
