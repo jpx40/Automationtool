@@ -22,6 +22,22 @@
 - https://docs.rs/libssh-rs/latest/libssh_rs/
 
 
+### HTTP
+- https://docs.rs/curl/latest/curl/
+- https://docs.rs/reqwest/latest/reqwest/
+- https://github.com/dlesl/erqwest
+
+### JSON
+- https://github.com/cloudwego/sonic-rs
+- https://github.com/serde-rs/json
+
+
+### RPC
+- https://github.com/hyperium/tonic
+- https://github.com/cloudwego/volo
+  
+
+
 
 ### Brain
 - https://elixir-lang.org/
