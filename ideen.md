@@ -31,6 +31,14 @@
 - https://github.com/cloudwego/sonic-rs
 - https://github.com/serde-rs/json
 
+### TOML
+- https://github.com/toml-rs/toml
+
+
+### Config
+- https://github.com/mehcode/config-rs # Oder Elixir equivalent
+
+
 
 ### RPC
 - https://github.com/hyperium/tonic
