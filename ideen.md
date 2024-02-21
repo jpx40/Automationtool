@@ -12,6 +12,8 @@
 - Ruby: https://www.ruby-lang.org/en/documentation/
    - https://github.com/oxidize-rb/rb-sys
    - https://github.com/matsadler/magnus
+- https://elv.sh/
+- https://elixir-lang.org/
 
 
 ### Logging
