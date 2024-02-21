@@ -6,9 +6,9 @@
 
 - Nushell: https://www.nushell.sh/
 - rhai https://rhai.rs/book/about/non-design.html#what-rhai-isnt
-- https://www.lua.org/pil/contents.html
-  -   https://github.com/mlua-rs/mlua
-  -   lua https://github.com/mlua-rs/rlua/
+- lua: https://www.lua.org/pil/contents.html
+  - https://github.com/mlua-rs/mlua
+  - https://github.com/mlua-rs/rlua/
 - Ruby: https://www.ruby-lang.org/en/documentation/
    - https://github.com/oxidize-rb/rb-sys
    - https://github.com/matsadler/magnus
