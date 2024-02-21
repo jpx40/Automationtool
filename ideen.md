@@ -70,7 +70,8 @@
 - https://github.com/rusterlium/rustler
 
 
-
+### DNS
+- https://github.com/hickory-dns/hickory-dns
 
 
 ### Kann als beispiel dienen
