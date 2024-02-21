@@ -25,6 +25,13 @@
 - https://docs.rs/syn/latest/syn/
 - https://docs.rs/minijinja/latest/minijinja/
 - https://github.com/tree-sitter/tree-sitter # Maybe if custom DSL
+- https://github.com/ridiculousfish/regress
+- https://github.com/ridiculousfish/regress
+- https://github.com/ridiculousfish/regress
+- https://crates.io/crates/globset
+- https://crates.io/crates/regex-automata
+- https://github.com/rust-lang/regex
+- https://github.com/rust-lang/regex
 
 
 ### Performance
