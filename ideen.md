@@ -22,6 +22,7 @@
 - https://github.com/artichoke/artichoke?tab=readme-ov-file
 - https://docs.rs/syn/latest/syn/
 - https://docs.rs/minijinja/latest/minijinja/
+- https://github.com/tree-sitter/tree-sitter # Maybe if custom DSL
 
 
 ### Performance
