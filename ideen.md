@@ -77,6 +77,8 @@
 - https://elixir-lang.org/
 - https://www.rust-lang.org/
 - https://github.com/rusterlium/rustler
+- https://github.com/h4cc/awesome-elixir
+- https://github.com/rust-unofficial/awesome-rust
 
 
 ### DNS
