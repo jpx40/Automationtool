@@ -86,6 +86,13 @@
 ### Kann als beispiel dienen
 - https://github.com/pyinfra-dev/pyinfra
 - https://www.pulumi.com/
+
+### Access Management etc.
+- https://github.com/istio/istio
+- https://github.com/zitadel/zitadel
+- https://docs.rs/actix-identity/latest/actix_identity/
+- https://github.com/h4cc/awesome-elixir?tab=readme-ov-file#authentication
+- https://github.com/rust-unofficial/awesome-rust?tab=readme-ov-file#authentication
   
 Podman
 https://github.com/containers/podman/blob/main/docs/tutorials/rootless_tutorial.md
