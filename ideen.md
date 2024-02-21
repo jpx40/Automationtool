@@ -17,6 +17,8 @@
 ### Logging
 - https://crates.io/crates/crossbeam
 - https://crates.io/crates/tracing
+- https://crates.io/crates/opentelemetry
+- https://crates.io/crates/prometheus
 
 ### Paser
 - https://github.com/artichoke/artichoke?tab=readme-ov-file
