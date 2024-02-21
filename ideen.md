@@ -9,6 +9,15 @@
 - https://www.lua.org/pil/contents.html
   -   https://github.com/mlua-rs/mlua
   -   lua https://github.com/mlua-rs/rlua/
+- Ruby: https://www.ruby-lang.org/en/documentation/
+   - https://github.com/oxidize-rb/rb-sys
+   - https://github.com/matsadler/magnus
+ 
+
+### Paser
+- https://github.com/artichoke/artichoke?tab=readme-ov-file
+- https://docs.rs/syn/latest/syn/
+- https://docs.rs/minijinja/latest/minijinja/
 
 
 ### SSH/ Rust
