@@ -12,13 +12,23 @@
 - Ruby: https://www.ruby-lang.org/en/documentation/
    - https://github.com/oxidize-rb/rb-sys
    - https://github.com/matsadler/magnus
- 
+
+
+### Logging
+- https://crates.io/crates/crossbeam
+- https://crates.io/crates/tracing
 
 ### Paser
 - https://github.com/artichoke/artichoke?tab=readme-ov-file
 - https://docs.rs/syn/latest/syn/
 - https://docs.rs/minijinja/latest/minijinja/
 
+
+### Performance
+- https://github.com/rayon-rs/rayon
+- https://crates.io/crates/enum_dispatch
+- https://crates.io/crates/crossbeam
+- https://github.com/smol-rs/smol
 
 ### SSH/ Rust
 
