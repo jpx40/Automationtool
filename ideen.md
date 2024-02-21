@@ -20,7 +20,7 @@
 - https://crates.io/crates/opentelemetry
 - https://crates.io/crates/prometheus
 
-### Paser
+### Parser
 - https://github.com/artichoke/artichoke?tab=readme-ov-file
 - https://docs.rs/syn/latest/syn/
 - https://docs.rs/minijinja/latest/minijinja/
