@@ -12,7 +12,9 @@ defmodule Exrust do
       :world
 
   """
-  def hello do
-    :world
+
+  def main(_args) do
+    num = Exrust.Native.add(1, 2)
+    IO.puts(num)
   end
 end

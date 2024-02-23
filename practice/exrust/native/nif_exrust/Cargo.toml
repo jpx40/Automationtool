@@ -1,0 +1,13 @@
+[package]
+name = "nif_exrust"
+version = "0.1.0"
+authors = []
+edition = "2021"
+
+[lib]
+name = "nif_exrust"
+path = "src/lib.rs"
+crate-type = ["cdylib"]
+
+[dependencies]
+rustler = "0.31.0"
