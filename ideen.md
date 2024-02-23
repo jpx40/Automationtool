@@ -50,6 +50,10 @@
 - https://github.com/openssh-rust/openssh
 - https://docs.rs/libssh-rs/latest/libssh_rs/
 
+### CLI
+- https://github.com/fuelen/owl
+- https://github.com/savonarola/optimus
+- https://docs.rs/clap/latest/clap/
 
 ### HTTP
 - https://docs.rs/curl/latest/curl/
