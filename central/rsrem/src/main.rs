@@ -66,10 +66,11 @@ fn main() {
     //   let mut reader = BufReader::new(file);
 
     //let buf = reader.fill_buf().unwrap();
-    file_upload(&mut session, path, size, &buffer);
+    let times: Option<(u64, u64)> = None;
+    file_upload(&mut session, path, size, &buffer, times);
 
     let test = String::from_utf8(buffer).unwrap();
-    println!("String: {}Size: {}", test, size);
+    println!("String: {}\nSize: {}", test, size);
 }
 
 fn read_config() {}
@@ -89,8 +90,14 @@ fn ssh_connect(user: User, connection: Connection) -> Session {
     sess
 }
 
-fn file_upload(session: &mut Session, file: &Path, size: u64, buf: &[u8]) {
-    let mut remote_file = session.scp_send(file, 0o644, size, None).unwrap();
+fn file_upload(
+    session: &mut Session,
+    file: &Path,
+    size: u64,
+    buf: &[u8],
+    times: Option<(u64, u64)>,
+) {
+    let mut remote_file = session.scp_send(file, 0o644, size, times).unwrap();
 
     remote_file.write_all(buf).unwrap();
     // Close the channel and wait for the whole content to be transferred
