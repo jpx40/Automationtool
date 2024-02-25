@@ -2,7 +2,7 @@
 #![allow(unused_imports)]
 #![allow(dead_code)]
 #![allow(unused_variables)]
-
+use ipaddress;
 use ssh2::{Channel, Session, Sftp, Stream};
 use std::clone;
 use std::fs::File;
@@ -91,8 +91,16 @@ impl Connection {
                 ttl: 128,
                 dont_fragment: true,
             };
-            let ip_addr = IpAddr::new(ip.parse().unwrap(), 4);
-            let _ = ping_rs::send_ping(ip, 4, [100, 100, 100, 100], Some(&options));
+            // let mut ip_addr: IpAddr = Ipv4Addr::new(127, 0, 0, 1);
+            let mut ip_addr = IpAddr::V4("127.0.0.1".parse().unwrap());
+            if ip.contains(":") {
+                ip_addr = IpAddr::V6(ip.parse().unwrap());
+            } else {
+                ip_addr = IpAddr::V4(ip.parse().unwrap())
+            }
+            let timeout = Duration::from_secs(1);
+            //let ip_addr = ipaddress::IPAddress::s
+            let _ = ping_rs::send_ping(&ip_addr, timeout, &[1, 2, 3, 4], Some(&options));
         } else {
             let s: String = "No IP address found".to_string();
             r = (false, s);
@@ -144,7 +152,9 @@ fn read_config() {}
 fn ssh_connect(user: User, connection: Connection) -> Session {
     // https://docs.rs/ssh2/latest/ssh2/
 
-    let address: String = connection.host + ":" + &connection.port.to_string();
+    let port = connection.port.unwrap();
+    let host = connection.host.unwrap();
+    let address: String = host + ":" + port.to_string().as_str();
     let tcp = TcpStream::connect(address).unwrap();
     // Try to authenticate with the first identity in the agent.
     let mut sess = Session::new().unwrap();
