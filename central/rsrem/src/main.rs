@@ -191,6 +191,7 @@ fn ssh_connect(user: User, connection: Connection) -> Session {
 }
 
 //https://rust-unofficial.github.io/patterns/idioms/default.html
+#[derive(Debug, PartialEq, Clone)]
 struct RemoteFile {
     path: String,
     mode: i32,
