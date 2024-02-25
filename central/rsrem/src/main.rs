@@ -1,4 +1,5 @@
 use ssh2::Session;
+use std::clone;
 use std::fs::File;
 use std::io::prelude::*;
 use std::io::BufReader;
@@ -67,7 +68,10 @@ fn main() {
 
     //let buf = reader.fill_buf().unwrap();
     let times: Option<(u64, u64)> = None;
-    file_upload(&mut session, path, size, &buffer, times);
+
+    let mut remote_file = RemoteFile::new(path.to_str().unwrap().to_string());
+    //   file_upload(&mut session, path, size, &buffer, times);
+    remote_file.file_upload(&mut session, &buffer);
 
     let test = String::from_utf8(buffer).unwrap();
     println!("String: {}\nSize: {}", test, size);
@@ -88,6 +92,43 @@ fn ssh_connect(user: User, connection: Connection) -> Session {
         .unwrap();
     assert!(sess.authenticated());
     sess
+}
+
+struct RemoteFile {
+    path: String,
+    mode: i32,
+    size: u64,
+    times: Option<(u64, u64)>,
+    buf: Option<Vec<u8>>,
+}
+
+impl RemoteFile {
+    fn new(path: String) -> Self {
+        Self {
+            path: path.clone(),
+            mode: 0o644,
+            size: File::open(Path::new(&path))
+                .unwrap()
+                .metadata()
+                .unwrap()
+                .len(),
+            times: None,
+            buf: None,
+        }
+    }
+
+    fn file_upload(&mut self, session: &mut Session, buf: &[u8]) {
+        let mut remote_file = session
+            .scp_send(Path::new(&self.path), self.mode, self.size, self.times)
+            .unwrap();
+
+        remote_file.write_all(buf).unwrap();
+        // Close the channel and wait for the whole content to be transferred
+        remote_file.send_eof().unwrap();
+        remote_file.wait_eof().unwrap();
+        remote_file.close().unwrap();
+        remote_file.wait_close().unwrap();
+    }
 }
 
 fn file_upload(
