@@ -2,14 +2,14 @@
 #![allow(unused_imports)]
 #![allow(dead_code)]
 #![allow(unused_variables)]
-use http::status;
-use http::Error;
+
 use ssh2::{Channel, Session, Sftp, Stream};
 use std::clone;
 use std::fs::File;
 use std::io::prelude::*;
 use std::io::BufReader;
 use std::io::{Error, ErrorKind};
+use std::net::IpAddr;
 use std::net::TcpStream;
 use std::net::{Ipv4Addr, Ipv6Addr};
 use std::path::Path;
@@ -48,7 +48,7 @@ impl Connection {
         }
     }
 }
-type PingResult = std::result::Result<(), std::io::Error>;
+type PingResult = (bool, String);
 impl Connection {
     fn connect(&self) -> Session {
         let tcp = TcpStream::connect(format!("{:?}:{:?}", self.host, self.port)).unwrap();
@@ -60,6 +60,7 @@ impl Connection {
     fn ping(&self) -> PingResult {
         let mut ip: String = String::new();
         let mut status: bool;
+        let mut r: (bool, String) = (false, String::new());
         match &self.host {
             Some(i) => {
                 ip = i.to_string();
@@ -86,10 +87,17 @@ impl Connection {
             }
         }
         if status == true {
+            let options = ping_rs::PingOptions {
+                ttl: 128,
+                dont_fragment: true,
+            };
+            let ip_addr = IpAddr::new(ip.parse().unwrap(), 4);
+            let _ = ping_rs::send_ping(ip, 4, [100, 100, 100, 100], Some(&options));
         } else {
-            let err = Error::new(ErrorKind::Other, "No IP address found");
-            return err;
+            let s: String = "No IP address found".to_string();
+            r = (false, s);
         }
+        r
     }
 }
 //    match self {i.ipv4 => {ip = ip + &self.ipv4.unwrap().to_string()}, i.ipv6 => { ip = ip + &self.ipv6.unwrap().to_string()} _ => {return Err(Error::new(ErrorKind::Other, "No IP address found"))}}
