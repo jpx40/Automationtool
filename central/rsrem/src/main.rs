@@ -109,7 +109,7 @@ impl Connection {
                 dont_fragment: true,
             };
             // let mut ip_addr: IpAddr = Ipv4Addr::new(127, 0, 0, 1);
-            let mut ip_addr = IpAddr::V4("127.0.0.1".parse().unwrap());
+            let mut ip_addr: IpAddr;
             if ip.contains(":") {
                 ip_addr = IpAddr::V6(ip.parse().unwrap());
             } else {
