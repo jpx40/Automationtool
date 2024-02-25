@@ -168,9 +168,9 @@ fn read_config() {}
 
 fn ssh_connect(user: User, connection: Connection) -> Session {
     // https://docs.rs/ssh2/latest/ssh2/
-    let test = connection.ping();
-    if !test.0 {
-        panic!("{}", test.1);
+    let (test, host, _) = connection.ping();
+    if !test {
+        panic!("{}", host);
     }
 
     let port = connection.port.unwrap();
