@@ -9,11 +9,15 @@ crossbeam-channel = "0.5.11"
 crossbeam-epoch = "0.9.18"
 crossbeam-queue = "0.3.11"
 curl = "0.4.46"
+futures = "0.3.30"
+futures-util = "0.3.30"
 http = "1.0.0"
+itertools = "0.12.1"
 log = "0.4.20"
 minijinja = { version = "1.0.12", features = ["unicode"] }
 openssl = { version = "0.10.64", features = ["v110"] }
 pest = "2.7.7"
+ping-rs = "0.1.2"
 regex = "1.10.3"
 russh = "0.42.0"
 serde = { version = "1.0.197", features = ["derive"] }

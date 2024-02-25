@@ -2,16 +2,20 @@
 #![allow(unused_imports)]
 #![allow(dead_code)]
 #![allow(unused_variables)]
+use http::status;
+use http::Error;
 use ssh2::{Channel, Session, Sftp, Stream};
 use std::clone;
 use std::fs::File;
 use std::io::prelude::*;
 use std::io::BufReader;
+use std::io::{Error, ErrorKind};
 use std::net::TcpStream;
 use std::net::{Ipv4Addr, Ipv6Addr};
 use std::path::Path;
 use std::str::Bytes;
 use std::string::String;
+use std::thread::Result;
 use std::{path::PathBuf, time::Duration};
 use toml;
 #[derive(Debug, Clone)]
@@ -28,22 +32,67 @@ impl User {
 
 #[derive(Debug, Clone)]
 struct Connection {
-    host: String,
-    port: i32,
+    host: Option<String>,
+    port: Option<u32>,
     ipv4: Option<Ipv4Addr>,
     ipv6: Option<Ipv6Addr>,
 }
 
 impl Connection {
-    fn new(host: String, port: i32) -> Connection {
+    fn new(host: String, port: u32) -> Connection {
         Connection {
-            host,
-            port,
+            host: Some(host),
+            port: Some(port),
             ipv4: None,
             ipv6: None,
         }
     }
 }
+type PingResult = std::result::Result<(), std::io::Error>;
+impl Connection {
+    fn connect(&self) -> Session {
+        let tcp = TcpStream::connect(format!("{:?}:{:?}", self.host, self.port)).unwrap();
+        let mut session = Session::new().unwrap();
+        session.set_tcp_stream(tcp);
+        session.handshake().unwrap();
+        session
+    }
+    fn ping(&self) -> PingResult {
+        let mut ip: String = String::new();
+        let mut status: bool;
+        match &self.host {
+            Some(i) => {
+                ip = i.to_string();
+                status = true;
+            }
+            _ => status = false,
+        }
+        if status != true {
+            match &self.ipv4 {
+                Some(i) => {
+                    ip = i.to_string();
+                    status = true;
+                }
+                _ => status = false,
+            }
+        }
+        if status != true {
+            match &self.ipv6 {
+                Some(i) => {
+                    ip = i.to_string();
+                    status = true;
+                }
+                _ => status = false,
+            }
+        }
+        if status == true {
+        } else {
+            let err = Error::new(ErrorKind::Other, "No IP address found");
+            return err;
+        }
+    }
+}
+//    match self {i.ipv4 => {ip = ip + &self.ipv4.unwrap().to_string()}, i.ipv6 => { ip = ip + &self.ipv6.unwrap().to_string()} _ => {return Err(Error::new(ErrorKind::Other, "No IP address found"))}}
 
 struct SSHConfig {}
 struct Config {
