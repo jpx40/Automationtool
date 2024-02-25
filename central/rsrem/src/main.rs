@@ -290,6 +290,7 @@ fn file_upload(
 
 fn check_os_type(session: &mut Session) -> String {
     let mut os = String::new();
+    //https://megamorf.gitlab.io/2021/05/08/detect-operating-system-in-shell-script/
     let script = r#"case "$OSTYPE" in
   solaris*) echo "SOLARIS" ;;
   darwin*)  echo "OSX" ;; 
