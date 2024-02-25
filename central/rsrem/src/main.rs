@@ -158,12 +158,14 @@ fn main() {
     //let buf = reader.fill_buf().unwrap();
     let times: Option<(u64, u64)> = None;
 
-    let remote_file = RemoteFile::new(path.to_str().unwrap().to_string());
-    //   file_upload(&mut session, path, size, &buffer, times);
-    remote_file.send(&mut session);
-
-    let test = String::from_utf8(buffer).unwrap();
-    println!("String: {}\nSize: {}", test, size);
+    let os = check_os_type(&mut session);
+    println!("{}", os);
+    // let remote_file = RemoteFile::new(path.to_str().unwrap().to_string());
+    // //   file_upload(&mut session, path, size, &buffer, times);
+    // remote_file.send(&mut session);
+    //
+    // let test = String::from_utf8(buffer).unwrap();
+    // println!("String: {}\nSize: {}", test, size);
 }
 
 fn read_config() {}
@@ -284,4 +286,21 @@ fn file_upload(
     remote_file.wait_eof().unwrap();
     remote_file.close().unwrap();
     remote_file.wait_close().unwrap();
+}
+
+fn check_os_type(session: &mut Session) -> String {
+    let mut os = String::new();
+    let script = r#"case "$OSTYPE" in
+  solaris*) echo "SOLARIS" ;;
+  darwin*)  echo "OSX" ;; 
+  linux*)   echo "LINUX" ;;
+  bsd*)     echo "BSD" ;;
+  msys*)    echo "WINDOWS" ;;
+  *)        echo "unknown: $OSTYPE" ;;
+esac"#;
+
+    let mut channel = session.channel_session().unwrap();
+    channel.exec(script).unwrap();
+    channel.read_to_string(&mut os).unwrap();
+    os.to_string()
 }
