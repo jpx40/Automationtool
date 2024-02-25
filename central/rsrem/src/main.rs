@@ -8,6 +8,7 @@ use std::net::{Ipv4Addr, Ipv6Addr};
 use std::path::Path;
 use std::str::Bytes;
 use std::string::String;
+use std::{path::PathBuf, time::Duration};
 use toml;
 #[derive(Debug, Clone)]
 struct User {
@@ -94,6 +95,7 @@ fn ssh_connect(user: User, connection: Connection) -> Session {
     sess
 }
 
+//https://rust-unofficial.github.io/patterns/idioms/default.html
 struct RemoteFile {
     path: String,
     mode: i32,
