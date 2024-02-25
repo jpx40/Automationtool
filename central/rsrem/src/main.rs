@@ -62,7 +62,7 @@ impl Connection {
     fn ping(&self) -> (bool, String, Option<IpAddr>) {
         let mut ip: String = String::new();
         let mut status: bool;
-        let mut r: (bool, String, Option<IpAddr>) = (false, String::new(), None);
+        let mut r: (bool, String, Option<IpAddr>);
         match &self.host {
             Some(i) => {
                 let check = ipaddress::IPAddress::is_valid(i.to_string());
