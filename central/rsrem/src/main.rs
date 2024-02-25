@@ -20,6 +20,7 @@ use std::str::Bytes;
 use std::string::String;
 use std::thread::Result;
 use std::{path::PathBuf, time::Duration};
+
 #[derive(Debug, Clone)]
 struct User {
     username: String,
