@@ -1,9 +1,12 @@
 use ssh2::Session;
 use std::fs::File;
 use std::io::prelude::*;
+use std::io::BufReader;
 use std::net::TcpStream;
 use std::net::{Ipv4Addr, Ipv6Addr};
 use std::path::Path;
+use std::str::Bytes;
+use std::string::String;
 use toml;
 #[derive(Debug, Clone)]
 struct User {
@@ -51,12 +54,27 @@ fn main() {
     let notbook_connection = Connection::new("192.168.178.46".to_string(), port);
     ssh_connect(user, connection);
 
-    ssh_connect(notbook_user, notbook_connection);
+    let mut session = ssh_connect(notbook_user, notbook_connection);
+    let path = Path::new("test.txt");
+    let size = path.metadata().unwrap().len();
+    if size == 0 {
+        panic!("File size is zero");
+    }
+    let mut buffer: Vec<u8> = Vec::new();
+
+    let _ = File::open(path).unwrap().read_to_end(&mut buffer);
+    //   let mut reader = BufReader::new(file);
+
+    //let buf = reader.fill_buf().unwrap();
+    file_upload(&mut session, path, size, &buffer);
+
+    let test = String::from_utf8(buffer).unwrap();
+    println!("String: {}Size: {}", test, size);
 }
 
 fn read_config() {}
 
-fn ssh_connect(user: User, connection: Connection) {
+fn ssh_connect(user: User, connection: Connection) -> Session {
     // https://docs.rs/ssh2/latest/ssh2/
 
     let address: String = connection.host + ":" + &connection.port.to_string();
@@ -68,4 +86,16 @@ fn ssh_connect(user: User, connection: Connection) {
     sess.userauth_password(&user.username, &user.password)
         .unwrap();
     assert!(sess.authenticated());
+    sess
+}
+
+fn file_upload(session: &mut Session, file: &Path, size: u64, buf: &[u8]) {
+    let mut remote_file = session.scp_send(file, 0o644, size, None).unwrap();
+
+    remote_file.write_all(buf).unwrap();
+    // Close the channel and wait for the whole content to be transferred
+    remote_file.send_eof().unwrap();
+    remote_file.wait_eof().unwrap();
+    remote_file.close().unwrap();
+    remote_file.wait_close().unwrap();
 }
