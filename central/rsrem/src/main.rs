@@ -1,4 +1,4 @@
-use ssh2::Session;
+use ssh2::{Channel, Session, Sftp, Stream};
 use std::clone;
 use std::fs::File;
 use std::io::prelude::*;
@@ -72,7 +72,7 @@ fn main() {
 
     let mut remote_file = RemoteFile::new(path.to_str().unwrap().to_string());
     //   file_upload(&mut session, path, size, &buffer, times);
-    remote_file.file_upload(&mut session, &buffer);
+    remote_file.send(&mut session);
 
     let test = String::from_utf8(buffer).unwrap();
     println!("String: {}\nSize: {}", test, size);
@@ -119,7 +119,47 @@ impl RemoteFile {
         }
     }
 
-    fn file_upload(&mut self, session: &mut Session, buf: &[u8]) {
+    fn set_mode(&mut self, mode: i32) {
+        self.mode = mode;
+    }
+
+    fn add_buf(&mut self, buf: Vec<u8>) {
+        self.buf = Some(buf);
+    }
+    fn set_times(&mut self, times: Option<(u64, u64)>) {
+        self.times = times;
+    }
+    fn set_size(&mut self, size: u64) {
+        self.size = size;
+    }
+    fn set_path(&mut self, path: String) {
+        self.path = path;
+    }
+
+    fn send(self, session: &mut Session) {
+        let mut buffer: Vec<u8>;
+        match self.buf {
+            Some(b) => {
+                buffer = b;
+            }
+            None => {
+                buffer = Vec::new();
+
+                let _ = File::open(&self.path).unwrap().read_to_end(&mut buffer);
+            }
+        };
+        let mut remote_file = session
+            .scp_send(Path::new(&self.path), self.mode, self.size, self.times)
+            .unwrap();
+
+        remote_file.write_all(&buffer).unwrap();
+        // Close the channel and wait for the whole content to be transferred
+        remote_file.send_eof().unwrap();
+        remote_file.wait_eof().unwrap();
+        remote_file.close().unwrap();
+        remote_file.wait_close().unwrap();
+    }
+    fn send_with_buf(&mut self, session: &mut Session, buf: &[u8]) {
         let mut remote_file = session
             .scp_send(Path::new(&self.path), self.mode, self.size, self.times)
             .unwrap();
