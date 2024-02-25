@@ -64,6 +64,8 @@ impl Connection {
         let mut ip: String = String::new();
         let mut status: bool;
         let r: (bool, String, Option<IpAddr>);
+        let ip_addr: IpAddr;
+
         match &self.host {
             Some(i) => {
                 let check = ipaddress::IPAddress::is_valid(i.to_string());
@@ -109,7 +111,6 @@ impl Connection {
                 dont_fragment: true,
             };
             // let mut ip_addr: IpAddr = Ipv4Addr::new(127, 0, 0, 1);
-            let ip_addr: IpAddr;
             if ip.contains(":") {
                 ip_addr = IpAddr::V6(ip.parse().unwrap());
             } else {

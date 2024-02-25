@@ -28,3 +28,4 @@ smol = "2.0.0"
 ssh2 = { version = "0.9.4", features = ["vendored-openssl"] }
 time = "0.3.34"
 toml = "0.8.10"
+uninit = "0.6.2"
