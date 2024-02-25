@@ -101,6 +101,7 @@ impl Connection {
             let timeout = Duration::from_secs(1);
             //let ip_addr = ipaddress::IPAddress::s
             let _ = ping_rs::send_ping(&ip_addr, timeout, &[1, 2, 3, 4], Some(&options));
+            r = (true, "success".to_string());
         } else {
             let s: String = "No IP address found".to_string();
             r = (false, s);
@@ -151,9 +152,14 @@ fn read_config() {}
 
 fn ssh_connect(user: User, connection: Connection) -> Session {
     // https://docs.rs/ssh2/latest/ssh2/
+    let test = connection.ping();
+    if !test.0 {
+        panic!("{}", test.1);
+    }
 
     let port = connection.port.unwrap();
     let host = connection.host.unwrap();
+
     let address: String = host + ":" + port.to_string().as_str();
     let tcp = TcpStream::connect(address).unwrap();
     // Try to authenticate with the first identity in the agent.
