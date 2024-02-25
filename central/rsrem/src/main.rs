@@ -1,3 +1,7 @@
+#![allow(clippy::useless_attribute)]
+#![allow(unused_imports)]
+#![allow(dead_code)]
+#![allow(unused_variables)]
 use ssh2::{Channel, Session, Sftp, Stream};
 use std::clone;
 use std::fs::File;
@@ -70,7 +74,7 @@ fn main() {
     //let buf = reader.fill_buf().unwrap();
     let times: Option<(u64, u64)> = None;
 
-    let mut remote_file = RemoteFile::new(path.to_str().unwrap().to_string());
+    let remote_file = RemoteFile::new(path.to_str().unwrap().to_string());
     //   file_upload(&mut session, path, size, &buffer, times);
     remote_file.send(&mut session);
 
