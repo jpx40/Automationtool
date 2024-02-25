@@ -63,7 +63,7 @@ impl Connection {
     fn ping(&self) -> (bool, String, Option<IpAddr>) {
         let mut ip: String = String::new();
         let mut status: bool;
-        let mut r: (bool, String, Option<IpAddr>);
+        let r: (bool, String, Option<IpAddr>);
         match &self.host {
             Some(i) => {
                 let check = ipaddress::IPAddress::is_valid(i.to_string());
@@ -78,7 +78,7 @@ impl Connection {
                     };
                 } else {
                     ip = i.to_string();
-                }
+                };
 
                 status = true;
             }
@@ -92,7 +92,7 @@ impl Connection {
                     status = true;
                 }
                 _ => status = false,
-            }
+            };
         }
         if !status {
             match &self.ipv6 {
@@ -101,7 +101,7 @@ impl Connection {
                     status = true;
                 }
                 _ => status = false,
-            }
+            };
         }
         if status {
             let options = ping_rs::PingOptions {
@@ -109,12 +109,12 @@ impl Connection {
                 dont_fragment: true,
             };
             // let mut ip_addr: IpAddr = Ipv4Addr::new(127, 0, 0, 1);
-            let mut ip_addr: IpAddr;
+            let ip_addr: IpAddr;
             if ip.contains(":") {
                 ip_addr = IpAddr::V6(ip.parse().unwrap());
             } else {
-                ip_addr = IpAddr::V4(ip.parse().unwrap())
-            }
+                ip_addr = IpAddr::V4(ip.parse().unwrap());
+            };
             let timeout = Duration::from_secs(1);
             //let ip_addr = ipaddress::IPAddress::s
             let _ = ping_rs::send_ping(&ip_addr, timeout, &[1, 2, 3, 4], Some(&options));
@@ -148,7 +148,7 @@ fn main() {
     let size = path.metadata().unwrap().len();
     if size == 0 {
         panic!("File size is zero");
-    }
+    };
     let mut buffer: Vec<u8> = Vec::new();
 
     let _ = File::open(path).unwrap().read_to_end(&mut buffer);
@@ -172,7 +172,7 @@ fn ssh_connect(user: User, connection: Connection) -> Session {
     let (test, host, _) = connection.ping();
     if !test {
         panic!("{}", host);
-    }
+    };
 
     let port = connection.port.unwrap();
     let host = connection.host.unwrap();
