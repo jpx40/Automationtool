@@ -2,7 +2,7 @@
 #![allow(unused_imports)]
 #![allow(dead_code)]
 #![allow(unused_variables)]
-use ipaddress;
+
 use ssh2::{Channel, Session, Sftp, Stream};
 use std::clone;
 use std::fs::File;
@@ -17,7 +17,7 @@ use std::str::Bytes;
 use std::string::String;
 use std::thread::Result;
 use std::{path::PathBuf, time::Duration};
-use toml;
+
 #[derive(Debug, Clone)]
 struct User {
     username: String,
