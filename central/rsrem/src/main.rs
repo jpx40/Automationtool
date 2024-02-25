@@ -3,7 +3,9 @@
 #![allow(dead_code)]
 #![allow(unused_variables)]
 
+use dns_lookup::{getaddrinfo, AddrInfoHints, SockType};
 use ssh2::{Channel, Session, Sftp, Stream};
+use std::borrow;
 use std::clone;
 use std::fs::File;
 use std::io::prelude::*;
@@ -13,11 +15,11 @@ use std::net::IpAddr;
 use std::net::TcpStream;
 use std::net::{Ipv4Addr, Ipv6Addr};
 use std::path::Path;
+use std::result;
 use std::str::Bytes;
 use std::string::String;
 use std::thread::Result;
 use std::{path::PathBuf, time::Duration};
-
 #[derive(Debug, Clone)]
 struct User {
     username: String,
@@ -48,7 +50,7 @@ impl Connection {
         }
     }
 }
-type PingResult = (bool, String);
+struct PingResult(bool, String, String);
 impl Connection {
     fn connect(&self) -> Session {
         let tcp = TcpStream::connect(format!("{:?}:{:?}", self.host, self.port)).unwrap();
@@ -57,27 +59,41 @@ impl Connection {
         session.handshake().unwrap();
         session
     }
-    fn ping(&self) -> PingResult {
+    fn ping(&self) -> (bool, String, Option<IpAddr>) {
         let mut ip: String = String::new();
         let mut status: bool;
-        let mut r: (bool, String) = (false, String::new());
+        let mut r: (bool, String, Option<IpAddr>) = (false, String::new(), None);
         match &self.host {
             Some(i) => {
-                ip = i.to_string();
+                let check = ipaddress::IPAddress::is_valid(i.to_string());
+                if !check {
+                    let host = self.host.clone().unwrap();
+                    let result = dns_lookup::lookup_host(&host);
+                    match result {
+                        Ok(i) => ip = i[0].to_string(),
+                        Err(_) => {
+                            panic!("No IP address found")
+                        }
+                    };
+                } else {
+                    ip = i.to_string();
+                }
+
                 status = true;
             }
             _ => status = false,
         }
-        if status != true {
+        if !status {
             match &self.ipv4 {
                 Some(i) => {
                     ip = i.to_string();
+
                     status = true;
                 }
                 _ => status = false,
             }
         }
-        if status != true {
+        if !status {
             match &self.ipv6 {
                 Some(i) => {
                     ip = i.to_string();
@@ -86,7 +102,7 @@ impl Connection {
                 _ => status = false,
             }
         }
-        if status == true {
+        if status {
             let options = ping_rs::PingOptions {
                 ttl: 128,
                 dont_fragment: true,
@@ -101,10 +117,10 @@ impl Connection {
             let timeout = Duration::from_secs(1);
             //let ip_addr = ipaddress::IPAddress::s
             let _ = ping_rs::send_ping(&ip_addr, timeout, &[1, 2, 3, 4], Some(&options));
-            r = (true, "success".to_string());
+            r = (true, "success".to_string(), Some(ip_addr));
         } else {
             let s: String = "No IP address found".to_string();
-            r = (false, s);
+            r = (false, s, None);
         }
         r
     }
