@@ -152,7 +152,7 @@ pub fn ssh_connect(user: User, connection: Connection) -> Session {
     let mut sess = Session::new().unwrap();
     sess.set_tcp_stream(tcp);
     sess.handshake().unwrap();
-    sess.userauth_password(&user.username, &user.password)
+    sess.userauth_password(&user.username.unwrap(), &user.password.unwrap())
         .unwrap();
     assert!(sess.authenticated());
     sess
