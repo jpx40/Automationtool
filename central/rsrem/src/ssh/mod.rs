@@ -113,6 +113,17 @@ impl RemoteFile {
         remote_file.wait_close().unwrap();
     }
 }
+
+pub fn execute_task(session: &mut Session, script: String) -> Result<String> {
+    let mut s = String::new();
+    let mut channel = session.channel_session().unwrap();
+    channel.exec(&script).unwrap();
+    channel.read_to_string(&mut s).unwrap();
+    channel.wait_close().unwrap();
+
+    Ok(s)
+}
+
 pub fn check_if_nu_exist(session: &mut Session) -> bool {
     let mut nu = String::new();
     let mut nu_exist: bool = false;
