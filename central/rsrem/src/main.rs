@@ -2,6 +2,7 @@
 #![allow(unused_imports)]
 #![allow(dead_code)]
 #![allow(unused_variables)]
+pub mod parser;
 pub mod ssh;
 pub mod user;
 use dns_lookup::{getaddrinfo, AddrInfoHints, SockType};

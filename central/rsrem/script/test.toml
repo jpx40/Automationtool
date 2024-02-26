@@ -1,0 +1,8 @@
+[config]
+target = "127.0.0.1"
+user = "jonas"
+password = "Artemis34!!"
+
+
+[tasks.A]
+command = "ls"

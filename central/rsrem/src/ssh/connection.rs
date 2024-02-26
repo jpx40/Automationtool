@@ -111,7 +111,7 @@ impl Connection {
             };
             let timeout = Duration::from_secs(1);
             //let ip_addr = ipaddress::IPAddress::s
-            let _ = ping_rs::send_ping(&ip_addr, timeout, &[1, 2, 3, 4], Some(&options));
+            //let _ = ping_rs::send_ping(&ip_addr, timeout, &[1, 2, 3, 4], Some(&options));
             r = (true, "success".to_string(), Some(ip_addr));
         } else {
             let s: String = "No IP address found".to_string();
