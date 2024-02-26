@@ -2,9 +2,10 @@
 #![allow(unused_imports)]
 #![allow(dead_code)]
 #![allow(unused_variables)]
-mod ssh;
-mod user;
+pub mod ssh;
+pub mod user;
 use dns_lookup::{getaddrinfo, AddrInfoHints, SockType};
+use ssh::connection::*;
 use ssh::*;
 use ssh2::{Channel, Session, Sftp, Stream};
 use std::borrow;
@@ -30,7 +31,7 @@ fn main() {
 
     let connection = Connection::new(host.to_string(), port);
     let user = User::new("jonas".to_string(), "Artemis34!!".to_string());
-    //let mut local_session = ssh_connect(user, connection);
+    let mut local_session = ssh_connect(user, connection);
     let notbook_user = User::new("jonas".to_string(), "artemisJP!!".to_string());
     let notbook_connection = Connection::new("192.168.178.46".to_string(), port);
 
@@ -48,14 +49,14 @@ fn main() {
     //let buf = reader.fill_buf().unwrap();
     let times: Option<(u64, u64)> = None;
 
-    //:let os = check_os_type(&mut local_session);
-    //   println!("{}", os);
-    // let remote_file = RemoteFile::new(path.to_str().unwrap().to_string());
-    // //   file_upload(&mut session, path, size, &buffer, times);
+    let os = check_os_type(&mut local_session);
+    println!("{}", os);
+    let remote_file = RemoteFile::new(path.to_str().unwrap().to_string());
+    //   file_upload(&mut session, path, size, &buffer, times);
     // remote_file.send(&mut session);
-    //
-    // let test = String::from_utf8(buffer).unwrap();
-    // println!("String: {}\nSize: {}", test, size);
+
+    let test = String::from_utf8(buffer).unwrap();
+    println!("String: {}\nSize: {}", test, size);
 }
 
 //fn read_config() {}
