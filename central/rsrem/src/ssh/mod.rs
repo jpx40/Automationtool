@@ -25,8 +25,16 @@ use std::thread::Result;
 use std::{path::PathBuf, time::Duration};
 pub mod connection;
 use connection::Connection;
+
 pub fn exec_script() {}
 
+pub fn load_file(path: &Path) -> String {
+    fs::read_to_string(path).unwrap()
+}
+
+pub fn load_file_bytes(path: &Path) -> Vec<u8> {
+    fs::read(path).unwrap()
+}
 //https://rust-unofficial.github.io/patterns/idioms/default.html
 #[derive(Debug, PartialEq, Clone)]
 pub struct RemoteFile {
@@ -105,7 +113,17 @@ impl RemoteFile {
         remote_file.wait_close().unwrap();
     }
 }
+pub fn check_if_nu_exist(session: &mut Session) -> bool {
+    let mut nu = String::new();
+    let nu_exist: bool;
 
+    let script = load_file(Path::new("check_nu_exist.sh"));
+    let mut channel = session.channel_session().unwrap();
+    channel.exec(&script).unwrap();
+    channel.read_to_string(&mut nu).unwrap();
+    println!("{}", nu);
+    false
+}
 pub fn file_upload(
     session: &mut Session,
     file: &Path,

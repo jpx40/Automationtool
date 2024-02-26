@@ -35,7 +35,7 @@ fn main() {
     let notbook_user = User::new("jonas".to_string(), "artemisJP!!".to_string());
     let notbook_connection = Connection::new("192.168.178.46".to_string(), port);
 
-    // let mut session = ssh_connect(notbook_user, notbook_connection);
+    let mut session = ssh_connect(notbook_user, notbook_connection);
     let path = Path::new("test.txt");
     let size = path.metadata().unwrap().len();
     if size == 0 {
@@ -57,6 +57,10 @@ fn main() {
 
     let test = String::from_utf8(buffer).unwrap();
     println!("String: {}\nSize: {}", test, size);
+
+    let _ = check_if_nu_exist(&mut local_session);
+
+    let _ = check_if_nu_exist(&mut session);
 }
 
 //fn read_config() {}

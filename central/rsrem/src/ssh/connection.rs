@@ -127,14 +127,6 @@ pub struct Config {
     pub ssh: SSHConfig,
 }
 
-pub fn load_file(path: &Path) -> String {
-    fs::read_to_string(path).unwrap()
-}
-
-pub fn load_file_bytes(path: &Path) -> Vec<u8> {
-    fs::read(path).unwrap()
-}
-
 pub fn ssh_connect(user: User, connection: Connection) -> Session {
     // https://docs.rs/ssh2/latest/ssh2/
     let (test, host, _) = connection.ping();
