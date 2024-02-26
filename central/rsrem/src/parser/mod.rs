@@ -2,10 +2,12 @@ use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::fs::File;
 use std::io::Read;
+use std::mem;
 use std::path::Path;
 use toml;
 use walkdir::WalkDir;
 
+//https://doc.rust-lang.org/rust-by-example/std/box.html
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct TomlConfig {
     pub config: Config,
