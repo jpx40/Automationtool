@@ -2090,6 +2090,7 @@ dependencies = [
 name = "rsrem"
 version = "0.1.0"
 dependencies = [
+ "bytes",
  "crossbeam",
  "crossbeam-channel",
  "crossbeam-epoch",
