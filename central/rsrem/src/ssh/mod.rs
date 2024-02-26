@@ -124,7 +124,7 @@ pub fn check_if_nu_exist(session: &mut Session) -> bool {
     println!("{}", nu);
 
     if nu.contains("false") {
-        nu_exist == false;
+        println!("nu not exist");
     } else if nu.contains("true") {
         nu_exist = true;
         println!("nu exist");
