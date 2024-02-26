@@ -110,9 +110,18 @@ impl Connection {
                 ip_addr = IpAddr::V4(ip.parse().unwrap());
             };
             let timeout = Duration::from_secs(1);
-            //let ip_addr = ipaddress::IPAddress::s
-            //let _ = ping_rs::send_ping(&ip_addr, timeout, &[1, 2, 3, 4], Some(&options));
-            r = (true, "success".to_string(), Some(ip_addr));
+            //let ip_addr = ipaddress::IPAddress::stringify!()
+            let mut res: bool;
+            let ping = ping_rs::send_ping(&ip_addr, timeout, &[1, 2, 3, 4], Some(&options));
+            match ping {
+                Ok(p) => res = true,
+                Err(_) => res = false,
+            }
+            if res {
+                r = (true, "success".to_string(), Some(ip_addr));
+            } else {
+                r = (false, "ping failed".to_string(), None);
+            }
         } else {
             let s: String = "No IP address found".to_string();
             r = (false, s, None);

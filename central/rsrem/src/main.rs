@@ -34,9 +34,9 @@ fn main() {
     let user = User::new("jonas".to_string(), "Artemis34!!".to_string());
     let mut local_session = ssh_connect(user, connection);
     let notbook_user = User::new("jonas".to_string(), "artemisJP!!".to_string());
-    let notbook_connection = Connection::new("192.168.178.46".to_string(), port);
+    //let notbook_connection = Connection::new("192.168.178.46".to_string(), port);
 
-    let mut session = ssh_connect(notbook_user, notbook_connection);
+    //let mut session = ssh_connect(notbook_user, notbook_connection);
     let path = Path::new("test.txt");
     let size = path.metadata().unwrap().len();
     if size == 0 {
