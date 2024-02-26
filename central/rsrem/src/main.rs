@@ -60,7 +60,7 @@ fn main() {
 
     let _ = check_if_nu_exist(&mut local_session);
 
-    let _ = check_if_nu_exist(&mut session);
+    // let _ = check_if_nu_exist(&mut session);
 }
 
 //fn read_config() {}

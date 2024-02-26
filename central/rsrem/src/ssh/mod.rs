@@ -115,14 +115,23 @@ impl RemoteFile {
 }
 pub fn check_if_nu_exist(session: &mut Session) -> bool {
     let mut nu = String::new();
-    let nu_exist: bool;
+    let mut nu_exist: bool = false;
 
     let script = load_file(Path::new("check_nu_exist.sh"));
     let mut channel = session.channel_session().unwrap();
     channel.exec(&script).unwrap();
     channel.read_to_string(&mut nu).unwrap();
     println!("{}", nu);
-    false
+
+    if nu.contains("false") {
+        nu_exist == false;
+    } else if nu.contains("true") {
+        nu_exist = true;
+        println!("nu exist");
+    } else {
+        println!("ERROR: Unknown response from check_nu_exist.sh");
+    }
+    nu_exist
 }
 pub fn file_upload(
     session: &mut Session,
