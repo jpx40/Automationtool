@@ -13,4 +13,7 @@ impl User {
             password: Some(password),
         }
     }
+    pub fn set_token(&mut self, token: String) {
+        self.token = Some(token);
+    }
 }
