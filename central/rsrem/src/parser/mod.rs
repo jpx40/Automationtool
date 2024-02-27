@@ -10,8 +10,16 @@ use walkdir::WalkDir;
 //https://doc.rust-lang.org/rust-by-example/std/box.html
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct TomlConfig {
-    pub config: Config,
-    pub task: HashMap<String, Task>,
+    pub config: Option<Config>,
+    pub group: Option<HashMap<String, Config>>,
+    pub task: Option<HashMap<String, Task>>,
+    pub env: Option<HashMap<String, String>>,
+    pub include: Option<Vec<String>>,
+    pub exclude: Option<Vec<String>>,
+    pub path: Option<Vec<String>>,
+    pub include_path: Option<Vec<String>>,
+    pub exclude_path: Option<Vec<String>>,
+    pub plugin: Option<Vec<String>>,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
@@ -31,14 +39,28 @@ pub struct Task {
 impl TomlConfig {
     pub fn new() -> TomlConfig {
         TomlConfig {
-            config: Config {
-                host: None,
-                user: None,
-                port: None,
-                password: None,
-                database: None,
-            },
-            task: HashMap::new(),
+            config: None,
+            group: Some(HashMap::new()),
+            task: Some(HashMap::new()),
+            env: Some(HashMap::new()),
+            path: Some(Vec::new()),
+            include_path: Some(Vec::new()),
+            include: Some(Vec::new()),
+            exclude: Some(Vec::new()),
+            exclude_path: Some(Vec::new()),
+            plugin: Some(Vec::new()),
+        }
+    }
+}
+
+impl Config {
+    pub fn new() -> Config {
+        Config {
+            host: None,
+            user: None,
+            port: None,
+            password: None,
+            database: None,
         }
     }
 }

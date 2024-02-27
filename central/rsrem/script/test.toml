@@ -2,7 +2,18 @@
 host = "127.0.0.1"
 user = "jonas"
 password = "Artemis34!!"
+#
+[group.A]
+host = "127.0.0.1"
+user = "jonas"
+password = "Artemis34!!"
 
+[task.B]
+#command = "ls"
 
 [task.A]
 command = "ls"
+
+
+[task.C]
+#command = "ls"

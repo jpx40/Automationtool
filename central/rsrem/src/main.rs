@@ -54,22 +54,73 @@ fn main() {
     /*     let times: Option<(u64, u64)> = None; */
 
     let mut conf: TomlConfig = TomlConfig::new();
+    let mut config: TomlConfig = TomlConfig::new();
     let check_result = parser::parse_toml("script/test.toml");
+
     match check_result {
         Ok(r) => {
             println!("{:?}", r);
             conf = r;
+            config = conf.clone();
         }
         Err(r) => println!("{:?}", r),
     }
-    let user: User = User::new(conf.config.user.unwrap(), conf.config.password.unwrap());
-    let connection = Connection::new(conf.config.host.unwrap(), 22);
-    let mut session = ssh_connect(user, connection);
-    for (k, v) in conf.task.iter() {
+    // let user: User = User::new(
+    //     conf.config.clone().unwrap().user.unwrap(),
+    //     conf.config.clone().unwrap().password.unwrap(),
+    // );
+    // let connection = Connection::new(conf.config.clone().unwrap().host.unwrap(), 22);
+    // let mut session = ssh_connect(user, connection);
+    for (k, v) in conf.task.unwrap().iter() {
+        let mut cf: Option<parser::Config> = None;
+        let mut session: Session;
         let task = v.clone();
-        let c = task.command.unwrap().clone();
-        let s = execute_task(&mut session, c);
-        println!("{}", s.unwrap());
+        let mut s = String::new();
+        println!("Task: {}", k);
+
+        for (kg, vg) in conf.group.clone().unwrap().iter() {
+            if k == kg {
+                cf = Some(vg.clone());
+            }
+            println!("Group: {}", k);
+        }
+        match cf {
+            Some(cfg) => {
+                let user = User::new(cfg.user.clone().unwrap(), cfg.password.clone().unwrap());
+                let connection = Connection::new(cfg.host.clone().unwrap(), 22);
+                session = ssh_connect(user, connection);
+                match task.command {
+                    Some(c) => {
+                        s = execute_task(&mut session, &c).unwrap();
+                        println!("{}", s);
+                        println!("Config: {}", k);
+                    }
+                    None => {
+                        println!("No command");
+                    }
+                }
+            }
+            None => match config.config.clone() {
+                Some(cfg) => {
+                    let user = User::new(cfg.user.clone().unwrap(), cfg.password.clone().unwrap());
+                    let connection = Connection::new(cfg.host.clone().unwrap(), 22);
+                    session = ssh_connect(user, connection);
+                    match task.command {
+                        Some(c) => {
+                            s = execute_task(&mut session, &c).unwrap();
+                            println!("{}", s);
+                            println!("Default Config",);
+                        }
+                        None => {
+                            println!("No command");
+                        }
+                    }
+                }
+                None => {
+                    println!("No config");
+                }
+            },
+        }
     }
     // let os = check_os_type(&mut local_session);
     // println!("{}", os);
