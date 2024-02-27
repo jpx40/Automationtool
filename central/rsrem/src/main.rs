@@ -101,6 +101,22 @@ fn main() {
             }
             None => match config.config.clone() {
                 Some(cfg) => {
+                    match &cfg.key {
+                        Some(u) => {
+                            let user = User::with_key(u.to_string());
+                            let connection = Connection::new(cfg.host.clone().unwrap(), cfg.port.unwrap());
+                            session = ssh_connect_with_key(user, connection);
+
+                        }
+                        None => {
+                            match &cfg.user {
+                                Some(u) => {}
+                                None => {}
+
+
+                        }
+                    }
+
                     let user = User::new(cfg.user.clone().unwrap(), cfg.password.clone().unwrap());
                     let connection = Connection::new(cfg.host.clone().unwrap(), cfg.port.unwrap());
                     session = ssh_connect(user, connection);

@@ -29,6 +29,10 @@ pub struct Config {
     pub port: Option<u32>,
     pub password: Option<String>,
     pub database: Option<String>,
+    pub key: Option<String>,
+    pub secret: Option<String>,
+    pub token: Option<String>,
+    pub access_key: Option<String>,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
@@ -61,6 +65,10 @@ impl Config {
             port: None,
             password: None,
             database: None,
+            key: None,
+            secret: None,
+            token: None,
+            access_key: None,
         }
     }
 }
