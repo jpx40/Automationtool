@@ -76,7 +76,6 @@ fn main() {
         let mut session: Session;
         let task = v.clone();
         let mut s = String::new();
-        println!("Task: {}", k);
 
         for (kg, vg) in conf.group.clone().unwrap().iter() {
             if k == kg {
@@ -93,6 +92,7 @@ fn main() {
                     Some(c) => {
                         s = execute_task(&mut session, &c).unwrap();
                         println!("{}", s);
+                        println!("Task: {}", k);
                         println!("Config: {}", k);
                     }
                     None => {
@@ -109,6 +109,7 @@ fn main() {
                         Some(c) => {
                             s = execute_task(&mut session, &c).unwrap();
                             println!("{}", s);
+                            println!("Task: {}", k);
                             println!("Default Config",);
                         }
                         None => {
