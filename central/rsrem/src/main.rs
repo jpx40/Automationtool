@@ -103,6 +103,7 @@ fn main() {
                 Some(cfg) => {
                     match &cfg.key {
                         Some(u) => {
+                            //https://docs.rs/ssh2/latest/ssh2/struct.Session.html#method.userauth_pubkey_file
                             let user = User::with_key(u.to_string());
                             let connection = Connection::new(cfg.host.clone().unwrap(), cfg.port.unwrap());
                             session = ssh_connect_with_key(user, connection);
