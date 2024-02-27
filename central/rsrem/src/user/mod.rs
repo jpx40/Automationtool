@@ -4,6 +4,9 @@ pub struct User {
     pub password: Option<String>,
     pub token: Option<String>,
     pub key: Option<String>,
+    pub key_path: Option<String>,
+
+    pub key_phrase: Option<String>,
 }
 
 impl User {
@@ -13,6 +16,8 @@ impl User {
             username: Some(username),
             password: Some(password),
             key: None,
+            key_path: None,
+            key_phrase: None,
         }
     }
     pub fn empty() -> User {
@@ -21,6 +26,8 @@ impl User {
             username: None,
             password: None,
             key: None,
+            key_path: None,
+            key_phrase: None,
         }
     }
 
@@ -30,6 +37,8 @@ impl User {
             key: Some(key),
             password: None,
             username: None,
+            key_path: None,
+            key_phrase: None,
         }
     }
     fn set_password(&mut self, password: String) {

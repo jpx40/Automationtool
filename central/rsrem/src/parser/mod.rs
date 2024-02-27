@@ -33,6 +33,9 @@ pub struct Config {
     pub secret: Option<String>,
     pub token: Option<String>,
     pub access_key: Option<String>,
+    pub key_file: Option<String>,
+    pub cert_file: Option<String>,
+    pub ca_file: Option<String>,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
@@ -69,6 +72,9 @@ impl Config {
             secret: None,
             token: None,
             access_key: None,
+            key_file: None,
+            cert_file: None,
+            ca_file: None,
         }
     }
 }

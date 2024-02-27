@@ -109,7 +109,7 @@ fn main() {
 
                         }
                         None => {
-                            match &cfg.user {
+                            match &cfg.password{
                                 Some(u) => {}
                                 None => {}
 
