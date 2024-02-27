@@ -81,7 +81,6 @@ fn main() {
             if k == kg {
                 cf = Some(vg.clone());
             }
-            println!("Group: {}", k);
         }
         match cf {
             Some(cfg) => {
@@ -91,7 +90,7 @@ fn main() {
                 match task.command {
                     Some(c) => {
                         s = execute_task(&mut session, &c).unwrap();
-                        println!("{}", s);
+                        //    println!("{}", s);
                         println!("Task: {}", k);
                         println!("Config: {}", k);
                     }
@@ -108,7 +107,7 @@ fn main() {
                     match task.command {
                         Some(c) => {
                             s = execute_task(&mut session, &c).unwrap();
-                            println!("{}", s);
+                            // println!("{}", s);
                             println!("Task: {}", k);
                             println!("Default Config",);
                         }

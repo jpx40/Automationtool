@@ -11,7 +11,7 @@ password = "Artemis34!!"
 port = 22
 
 [task.B]
-#command = "ls"
+command = "ls"
 
 [task.A]
 command = "ls"
