@@ -2,11 +2,13 @@
 host = "127.0.0.1"
 user = "jonas"
 password = "Artemis34!!"
+port = 22
 #
 [group.A]
 host = "127.0.0.1"
 user = "jonas"
 password = "Artemis34!!"
+port = 22
 
 [task.B]
 #command = "ls"

@@ -87,7 +87,7 @@ fn main() {
         match cf {
             Some(cfg) => {
                 let user = User::new(cfg.user.clone().unwrap(), cfg.password.clone().unwrap());
-                let connection = Connection::new(cfg.host.clone().unwrap(), 22);
+                let connection = Connection::new(cfg.host.clone().unwrap(), cfg.port.unwrap());
                 session = ssh_connect(user, connection);
                 match task.command {
                     Some(c) => {
@@ -103,7 +103,7 @@ fn main() {
             None => match config.config.clone() {
                 Some(cfg) => {
                     let user = User::new(cfg.user.clone().unwrap(), cfg.password.clone().unwrap());
-                    let connection = Connection::new(cfg.host.clone().unwrap(), 22);
+                    let connection = Connection::new(cfg.host.clone().unwrap(), cfg.port.unwrap());
                     session = ssh_connect(user, connection);
                     match task.command {
                         Some(c) => {

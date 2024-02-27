@@ -26,7 +26,7 @@ pub struct TomlConfig {
 pub struct Config {
     pub host: Option<String>,
     pub user: Option<String>,
-    pub port: Option<i32>,
+    pub port: Option<u32>,
     pub password: Option<String>,
     pub database: Option<String>,
 }
