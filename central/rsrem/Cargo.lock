@@ -2110,6 +2110,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "pipe-trait"
+version = "0.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c1be1ec9e59f0360aefe84efa6f699198b685ab0d5718081e9f72aa2344289e2"
+
+[[package]]
 name = "piper"
 version = "0.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2450,6 +2456,7 @@ dependencies = [
  "openssl",
  "pest",
  "ping-rs",
+ "pipe-trait",
  "regex",
  "reqwest",
  "russh",
