@@ -27,6 +27,7 @@ openssl = { version = "0.10.64", features = ["v110"] }
 pest = "2.7.7"
 ping-rs = "0.1.2"
 pipe-trait = "0.4.0"
+rayon = "1.9.0"
 regex = "1.10.3"
 reqwest = "0.11.24"
 russh = "0.42.0"
