@@ -30,32 +30,13 @@ use std::{path::PathBuf, time::Duration};
 use user::User;
 
 fn main() {
-    let host = "127.0.0.1";
-    let port = 22;
+    start("script/test.toml");
+}
 
-    // let connection = Connection::new(host.to_string(), port);
-    // let user = User::new("jonas".to_string(), "Artemis34!!".to_string());
-    // let mut local_session = ssh_connect(user, connection);
-    // let notbook_user = User::new("jonas".to_string(), "artemisJP!!".to_string());
-    //let notbook_connection = Connection::new("192.168.178.46".to_string(), port);
-
-    //let mut session = ssh_connect(notbook_user, notbook_connection);
-    let path = Path::new("test.txt");
-    let size = path.metadata().unwrap().len();
-    if size == 0 {
-        panic!("File size is zero");
-    };
-    let mut buffer: Vec<u8> = Vec::new();
-
-    let _ = File::open(path).unwrap().read_to_end(&mut buffer);
-    //   let mut reader = BufReader::new(file);
-
-    //let buf = reader.fill_buf().unwrap();
-    /*     let times: Option<(u64, u64)> = None; */
-
+pub fn start(file: &str) {
     let mut conf: TomlConfig = TomlConfig::new();
     let mut config: TomlConfig = TomlConfig::new();
-    let check_result = parser::parse_toml("script/test.toml");
+    let check_result = parser::parse_toml(file);
 
     match check_result {
         Ok(r) => {
@@ -65,12 +46,6 @@ fn main() {
         }
         Err(r) => println!("{:?}", r),
     }
-    // let user: User = User::new(
-    //     conf.config.clone().unwrap().user.unwrap(),
-    //     conf.config.clone().unwrap().password.unwrap(),
-    // );
-    // let connection = Connection::new(conf.config.clone().unwrap().host.unwrap(), 22);
-    // let mut session = ssh_connect(user, connection);
     for (k, v) in conf.task.unwrap().iter() {
         let mut cf: Option<parser::Config> = None;
         let mut session: Session;
@@ -122,18 +97,6 @@ fn main() {
             },
         }
     }
-    // let os = check_os_type(&mut local_session);
-    // println!("{}", os);
-    // let remote_file = RemoteFile::new(path.to_str().unwrap().to_string());
-    //   file_upload(&mut session, path, size, &buffer, times);
-    // remote_file.send(&mut session);
-
-    // let test = String::from_utf8(buffer).unwrap();
-    // println!("String: {}\nSize: {}", test, size);
-    //
-    // let _ = check_if_nu_exist(&mut local_session);
-
-    // let _ = check_if_nu_exist(&mut session);
 }
 
 fn match_user(conf: parser::Config, session: &mut Session) {}
