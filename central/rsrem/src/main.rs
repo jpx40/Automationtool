@@ -101,23 +101,6 @@ fn main() {
             }
             None => match config.config.clone() {
                 Some(cfg) => {
-                    match &cfg.key {
-                        Some(u) => {
-                            //https://docs.rs/ssh2/latest/ssh2/struct.Session.html#method.userauth_pubkey_file
-                            let user = User::with_key(u.to_string());
-                            let connection = Connection::new(cfg.host.clone().unwrap(), cfg.port.unwrap());
-                            session = ssh_connect_with_key(user, connection);
-
-                        }
-                        None => {
-                            match &cfg.password{
-                                Some(u) => {}
-                                None => {}
-
-
-                        }
-                    }
-
                     let user = User::new(cfg.user.clone().unwrap(), cfg.password.clone().unwrap());
                     let connection = Connection::new(cfg.host.clone().unwrap(), cfg.port.unwrap());
                     session = ssh_connect(user, connection);
@@ -153,4 +136,5 @@ fn main() {
     // let _ = check_if_nu_exist(&mut session);
 }
 
+fn match_user(conf: parser::Config, session: &mut Session) {}
 //fn read_config() {}

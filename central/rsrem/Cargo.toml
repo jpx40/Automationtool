@@ -7,6 +7,7 @@ edition = "2021"
 anyhow = "1.0.80"
 arraystring = "0.3.0"
 bytes = { version = "1.5.0", features = ["serde"] }
+clap = "4.5.1"
 compact_str = "0.7.1"
 config = "0.14.0"
 crossbeam = "0.8.4"
@@ -41,6 +42,8 @@ ssh2 = { version = "0.9.4", features = ["vendored-openssl"] }
 structured-logger = "1.0.3"
 syn = "2.0.50"
 termcolor = "1.4.1"
+tailcall = "1.0.1"
+tailcall-impl = "1.0.1"
 thiserror = "1.0.57"
 time = "0.3.34"
 tiny_http = "0.12.0"
@@ -48,7 +51,7 @@ toml = "0.8.10"
 tracing = { version = "0.1.40", features = ["async-await", "log"] }
 tracing-subscriber = "0.3.18"
 uninit = "0.6.2"
-ureq = "2.9.6"
+ureq = { version = "2.9.6", features = ["json"] }
 url = { version = "2.5.0", features = ["serde"] }
 walkdir = "2.4.0"
 warp = "0.3.6"
