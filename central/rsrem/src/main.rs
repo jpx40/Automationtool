@@ -6,7 +6,10 @@ pub mod parser;
 pub mod ssh;
 pub mod user;
 use argfile;
-use clap::Parser;
+use clap_serde_derive::{
+    clap::{self, Parser},
+    ClapSerde,
+};
 use clio::*;
 use dns_lookup::{getaddrinfo, AddrInfoHints, SockType};
 use parser::TomlConfig;
@@ -32,17 +35,35 @@ use std::{borrow, task};
 use std::{path::PathBuf, time::Duration};
 use user::User;
 
-#[derive(Parser, Debug)]
+#[derive(Parser)]
 #[command(version, about, long_about = None)]
 struct Args {
-    #[arg(short, long)]
-    config: String,
+    input: Vec<std::path::PathBuf>,
+
+    #[clap(short, long = "config")]
+    config_path: std::path::PathBuf,
+
+    /// Rest of arguments
+    #[clap(flatten)]
+    pub config: <Config as ClapSerde>::Opt,
+}
+#[derive(ClapSerde)]
+struct Config {
+    /// String argument
+    #[clap(short, long)]
+    name: String,
 }
 
 fn main() {
-    start("script/test.toml");
-}
+    let mut args = Args::parse();
+//https://gitlab.com/DPDmancul/clap-serde-derive
+    led config = if let Ok(f) = File::open(&args.config_path) {
+    // start("script/test.toml");
 
+
+    let file = fs::read_to_string(f).unwrap();
+
+    };
 pub fn start(file: &str) {
     let mut conf: TomlConfig = TomlConfig::new();
     let mut config: TomlConfig = TomlConfig::new();
