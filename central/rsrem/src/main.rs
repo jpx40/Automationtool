@@ -5,6 +5,9 @@
 pub mod parser;
 pub mod ssh;
 pub mod user;
+use argfile;
+use clap::Parser;
+use clio::*;
 use dns_lookup::{getaddrinfo, AddrInfoHints, SockType};
 use parser::TomlConfig;
 use ssh::connection::*;
@@ -28,6 +31,13 @@ use std::thread::Result;
 use std::{borrow, task};
 use std::{path::PathBuf, time::Duration};
 use user::User;
+
+#[derive(Parser, Debug)]
+#[command(version, about, long_about = None)]
+struct Args {
+    #[arg(short, long)]
+    config: String,
+}
 
 fn main() {
     start("script/test.toml");
