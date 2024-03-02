@@ -34,6 +34,7 @@ use std::thread::Result;
 use std::{borrow, task};
 use std::{path::PathBuf, time::Duration};
 use user::User;
+use toml;
 
 #[derive(Parser)]
 #[command(version, about, long_about = None)]
@@ -64,6 +65,8 @@ fn main() {
     let file = fs::read_to_string(f).unwrap();
 
     };
+
+pub fn cli() {}
 pub fn start(file: &str) {
     let mut conf: TomlConfig = TomlConfig::new();
     let mut config: TomlConfig = TomlConfig::new();
