@@ -18,6 +18,7 @@ use ssh::*;
 use ssh2::CheckResult;
 use ssh2::{Channel, Session, Sftp, Stream};
 use std::clone;
+use std::fs;
 use std::fs::File;
 use std::hash::RandomState;
 use std::io::prelude::*;
@@ -33,11 +34,11 @@ use std::string::String;
 use std::thread::Result;
 use std::{borrow, task};
 use std::{path::PathBuf, time::Duration};
-use user::User;
 use toml;
+use user::User;
 
 #[derive(Parser)]
-#[command(version, about, long_about = None)]
+#[command(version, about , long_about = None)]
 struct Args {
     input: Vec<std::path::PathBuf>,
 
@@ -57,29 +58,43 @@ struct Config {
 
 fn main() {
     let mut args = Args::parse();
-//https://gitlab.com/DPDmancul/clap-serde-derive
-    led config = if let Ok(f) = File::open(&args.config_path) {
+
+    let c = cli(args);
+
+    start(c);
+    //https://gitlab.com/DPDmancul/clap-serde-derive
+    //  led config = if let Ok(f) = File::open(&args.config_path) {
     // start("script/test.toml");
+}
+pub fn cli(args: Args) -> TomlConfig {
+    let mut out = TomlConfig::new();
 
+    let config = if let Ok(f) = PathBuf::from(args.config_path).canonicalize() {
+        let file = fs::read_to_string(f).unwrap();
+        let cf = toml::from_str::<TomlConfig>(&file);
 
-    let file = fs::read_to_string(f).unwrap();
+        match cf {
+            Ok(c) => out = c,
 
-    };
-
-pub fn cli() {}
-pub fn start(file: &str) {
-    let mut conf: TomlConfig = TomlConfig::new();
-    let mut config: TomlConfig = TomlConfig::new();
-    let check_result = parser::parse_toml(file);
-
-    match check_result {
-        Ok(r) => {
-            println!("{:?}", r);
-            conf = r;
-            config = conf.clone();
+            Err(c) => println!("{:?}", c),
         }
-        Err(r) => println!("{:?}", r),
-    }
+    };
+    out
+}
+pub fn start(c: TomlConfig) {
+    let mut conf: TomlConfig = TomlConfig::new();
+    // let mut config: TomlConfig = TomlConfig::new();
+    // let check_result = parser::parse_toml(file);
+    let config = c;
+    conf = config.clone();
+    // match check_result {
+    //     Ok(r) => {
+    //         println!("{:?}", r);
+    //         conf = r;
+    //         config = conf.clone();
+    //     }
+    //     Err(r) => println!("{:?}", r),
+    // }
     for (k, v) in conf.task.unwrap().iter() {
         let mut cf: Option<parser::Config> = None;
         let mut session: Session;
