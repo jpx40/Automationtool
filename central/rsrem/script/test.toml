@@ -10,8 +10,9 @@ user = "jonas"
 password = "artemisJP!!"
 port = 22
 
+
 [task.B]
-cmd.builtin.copy = { file = "./pkg.exs", location = "~" }
+cmd.builtin.copy = { file = "~/Documents/ProjektdokumentationFachinformatikerAnwendungsentwicklung2021AlinaAhrens.pdf", location = "~/Downloads/" }
 
 name = "test"
 cmd.builtin.shell = { name = "bash", args = ["-c", "ls"] }

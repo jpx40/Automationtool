@@ -1,4 +1,5 @@
 use std::{
+    clone,
     collections::HashMap,
     fmt::Debug,
     path::{self, PathBuf},
@@ -19,39 +20,47 @@ pub fn shell(cmd: parser::Cmd) -> String {
 }
 
 pub struct CopyParam {
-    location: String,
-    file: Option<String>,
-    dir: Option<String>,
-    path: Option<String>,
+    pub location: String,
+    pub file: Option<String>,
+    pub dir: Option<String>,
+    pub path: Option<String>,
 }
 
 impl CopyParam {
-    fn new(location: String, file: String) -> CopyParam {
+    fn new(location: String, path: String, file: String) -> CopyParam {
         CopyParam {
             location: location,
-            path: Some(file),
+            path: Some(path),
             dir: None,
-            file: None,
+            file: Some(file),
         }
     }
 }
 pub fn copy(cmd: parser::Cmd) -> CopyParam {
     let mut s: HashMap<String, String> = HashMap::new();
-    let f = cmd.file.unwrap();
+    //let f = cmd.file.unwrap();
     let mut st = String::new();
     let mut file = String::new();
 
-    let tmp = cmd.file.as_ref().unwrap().to_owned().clone();
-    let mut path = PathBuf::from(&tmp).as_path();
+    //let tmp = cmd.file.as_ref().unwrap().to_owned().clone();
+    //let mut path = PathBuf::from(tmp.as_str()).as_path();
     let dir = String::new();
 
     let mut pb = PathBuf::new();
-    match cmd.file {
+    match &cmd.file {
         Some(f) => {
-            pb = PathBuf::from(f);
+            pb = PathBuf::from(f.clone());
             match pb.is_file() {
                 true => {
-                    file = path.file_name().unwrap().to_string_lossy().to_string();
+                    file = pb
+                        .as_path()
+                        .canonicalize()
+                        .unwrap()
+                        .file_name()
+                        .unwrap()
+                        .to_string_lossy()
+                        .to_string()
+                        .to_owned();
                 }
                 false => println!("no file"),
             }
@@ -60,11 +69,12 @@ pub fn copy(cmd: parser::Cmd) -> CopyParam {
         None => st = "Nothing".to_string(),
     }
 
-    let file = PathBuf::from(f)
+    let path: String = PathBuf::from(&cmd.file.unwrap())
         .canonicalize()
         .unwrap()
         .to_string_lossy()
         .to_string();
 
-    CopyParam::new(cmd.location.unwrap(), file)
+    let location: String = cmd.location.unwrap() + &file;
+    CopyParam::new(location, path, file)
 }

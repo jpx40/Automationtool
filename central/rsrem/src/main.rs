@@ -173,6 +173,7 @@ pub fn exec_cmd(session: &mut Session, cmd: &HashMap<String, parser::Cmd>) {
             println!("{}", out);
         } else if k == "copy" {
             let s = builtin::copy(v.clone());
+            let _ = ssh::copy_file(session, s);
         }
     }
 }

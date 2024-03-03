@@ -40,6 +40,7 @@ pub fn load_file_bytes(path: &Path) -> Vec<u8> {
 #[derive(Debug, PartialEq, Clone)]
 pub struct RemoteFile {
     pub path: String,
+    pub filename: Option<String>,
     pub mode: i32,
     pub size: u64,
     pub times: Option<(u64, u64)>,
@@ -51,6 +52,7 @@ impl RemoteFile {
         Self {
             path: path.clone(),
             mode: 0o644,
+            filename: None,
             size: File::open(Path::new(&path))
                 .unwrap()
                 .metadata()
@@ -115,9 +117,10 @@ impl RemoteFile {
     }
 }
 
-pub fn copy_file(session: &mut Session, param: builtin::CopyParam) -> String {
+pub fn copy_file(session: &mut Session, param: builtin::CopyParam) {
     let mut s = String::new();
-    s
+    let mut remote_file = RemoteFile::new(param.location);
+    let mut rem = remote_file.send(session);
 }
 pub fn execute(session: &mut Session, script: String) -> Result<String> {
     let mut s = String::new();
