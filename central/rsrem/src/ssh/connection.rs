@@ -5,6 +5,8 @@
 
 use crate::user::User;
 use dns_lookup::{getaddrinfo, AddrInfoHints, SockType};
+use fastping_rs::PingResult::{Idle, Receive};
+use fastping_rs::Pinger;
 use ssh2::{Channel, Session, Sftp, Stream};
 use std::borrow;
 use std::clone;
@@ -58,7 +60,10 @@ impl Connection {
         let mut status: bool;
         let r: (bool, String, Option<IpAddr>);
         let ip_addr: IpAddr;
-
+        let (pinger, results) = match Pinger::new(None, Some(56)) {
+            Ok((pinger, results)) => (pinger, results),
+            Err(e) => panic!("Error creating pinger: {}", e),
+        };
         match &self.host {
             Some(i) => {
                 let check = ipaddress::IPAddress::is_valid(i.to_string());
@@ -112,8 +117,10 @@ impl Connection {
             let timeout = Duration::from_secs(1);
             //let ip_addr = ipaddress::IPAddress::stringify!()
             let mut res: bool;
-            let ping = ping_rs::send_ping(&ip_addr, timeout, &[1, 2, 3, 4], Some(&options));
-            match ping {
+            pinger.add_ipaddr(&ip);
+            //   let ping = ping_rs::send_ping(&ip_addr, timeout, &[1, 2, 3, 4], Some(&options));
+            pinger.run_pinger();
+            match results.recv() {
                 Ok(p) => res = true,
                 Err(_) => res = false,
             }
@@ -121,6 +128,7 @@ impl Connection {
                 r = (true, "success".to_string(), Some(ip_addr));
             } else {
                 r = (false, "ping failed".to_string(), None);
+                //r = (true, "success".to_string(), Some(ip_addr))
             }
         } else {
             let s: String = "No IP address found".to_string();

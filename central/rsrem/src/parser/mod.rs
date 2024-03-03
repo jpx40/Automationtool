@@ -41,11 +41,16 @@ pub struct Config {
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Task {
     pub name: String,
-    pub cmd: HashMap<String, Plugin>,
+    pub cmd: HashMap<String, HashMap<String, Cmd>>,
 }
 
-#[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct Plugin(Cmd);
+#[derive(Debug)]
+pub enum Command {
+    Builtin,
+    Plugin,
+}
+
+pub struct Plugin {}
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Cmd {
@@ -53,6 +58,11 @@ pub struct Cmd {
     pub args: Option<Vec<String>>,
     pub envs: Option<Vec<String>>,
     pub command: Option<String>,
+    pub file: Option<String>,
+    pub dir: Option<String>,
+    pub ip: Option<String>,
+    pub option: Option<Vec<String>>,
+    pub location: Option<String>,
 }
 
 impl TomlConfig {

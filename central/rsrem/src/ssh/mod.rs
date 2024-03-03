@@ -3,6 +3,7 @@
 #![allow(dead_code)]
 #![allow(unused_variables)]
 
+use crate::builtin;
 use crate::user::User;
 use dns_lookup::{getaddrinfo, AddrInfoHints, SockType};
 use ssh2::{Channel, Session, Sftp, Stream};
@@ -114,10 +115,14 @@ impl RemoteFile {
     }
 }
 
-pub fn execute_task(session: &mut Session, script: &str) -> Result<String> {
+pub fn copy_file(session: &mut Session, param: builtin::CopyParam) -> String {
+    let mut s = String::new();
+    s
+}
+pub fn execute(session: &mut Session, script: String) -> Result<String> {
     let mut s = String::new();
     let mut channel = session.channel_session().unwrap();
-    channel.exec(script).unwrap();
+    channel.exec(&script).unwrap();
     channel.read_to_string(&mut s).unwrap();
     channel.wait_close().unwrap();
 

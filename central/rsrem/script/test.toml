@@ -7,13 +7,14 @@ port = 22
 [group.B]
 host = "127.0.0.1"
 user = "jonas"
-password = "Artemis34!!"
+password = "artemisJP!!"
 port = 22
 
 [task.B]
+cmd.builtin.copy = { file = "./pkg.exs", location = "~" }
+
 name = "test"
 cmd.builtin.shell = { name = "bash", args = ["-c", "ls"] }
-
 # [task.A]
 # command = "ls"
 #

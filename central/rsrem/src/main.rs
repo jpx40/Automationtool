@@ -7,19 +7,18 @@ pub mod parser;
 pub mod ssh;
 pub mod user;
 use argfile;
-use builtin::*;
 use clap_serde_derive::{
     clap::{self, Parser},
     ClapSerde,
 };
 use clio::*;
+use core::str;
 use dns_lookup::{getaddrinfo, AddrInfoHints, SockType};
 use parser::TomlConfig;
 use ssh::connection::*;
 use ssh::*;
 use ssh2::CheckResult;
 use ssh2::{Channel, Session, Sftp, Stream};
-use std::clone;
 use std::fs;
 use std::fs::File;
 use std::hash::RandomState;
@@ -35,6 +34,7 @@ use std::str::Bytes;
 use std::string::String;
 use std::thread::Result;
 use std::{borrow, task};
+use std::{clone, collections::HashMap};
 use std::{path::PathBuf, time::Duration};
 use toml;
 use user::User;
@@ -132,8 +132,7 @@ pub fn start(c: TomlConfig) {
                     let user = User::new(cfg.user.clone().unwrap(), cfg.password.clone().unwrap());
                     let connection = Connection::new(cfg.host.clone().unwrap(), cfg.port.unwrap());
                     session = ssh_connect(user, connection);
-
-                    println!("Task: {:?}", task);
+                    execute_task(&mut session, task);
 
                     // match task.command {
                     //     Some(c) => {
@@ -159,13 +158,23 @@ pub fn execute_task(session: &mut Session, task: parser::Task) {
 
     for (k, v) in c.iter() {
         if k == "builtin" {
-            exec_cmd(v);
+            exec_cmd(session, v);
         } else {
             println!("Not a builtin: {}", k);
         }
     }
 }
 
-pub fn exec_cmd(cmd: fn(parser::Cmd)) {}
+pub fn exec_cmd(session: &mut Session, cmd: &HashMap<String, parser::Cmd>) {
+    for (k, v) in cmd.iter() {
+        if k == "shell" {
+            let script: String = builtin::shell(v.clone());
+            let out: String = ssh::execute(session, script).unwrap();
+            println!("{}", out);
+        } else if k == "copy" {
+            let s = builtin::copy(v.clone());
+        }
+    }
+}
 fn match_user(conf: parser::Config, session: &mut Session) {}
 //fn read_config() {}
