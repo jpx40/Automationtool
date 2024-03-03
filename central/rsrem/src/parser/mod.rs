@@ -40,6 +40,18 @@ pub struct Config {
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Task {
+    pub name: String,
+    pub cmd: HashMap<String, Plugin>,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct Plugin(Cmd);
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct Cmd {
+    pub name: Option<String>,
+    pub args: Option<Vec<String>>,
+    pub envs: Option<Vec<String>>,
     pub command: Option<String>,
 }
 

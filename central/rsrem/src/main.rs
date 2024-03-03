@@ -2,10 +2,12 @@
 #![allow(unused_imports)]
 #![allow(dead_code)]
 #![allow(unused_variables)]
+pub mod builtin;
 pub mod parser;
 pub mod ssh;
 pub mod user;
 use argfile;
+use builtin::*;
 use clap_serde_derive::{
     clap::{self, Parser},
     ClapSerde,
@@ -111,34 +113,39 @@ pub fn start(c: TomlConfig) {
                 let user = User::new(cfg.user.clone().unwrap(), cfg.password.clone().unwrap());
                 let connection = Connection::new(cfg.host.clone().unwrap(), cfg.port.unwrap());
                 session = ssh_connect(user, connection);
-                match task.command {
-                    Some(c) => {
-                        s = execute_task(&mut session, &c).unwrap();
-                        //    println!("{}", s);
-                        println!("Task: {}", k);
-                        println!("Config: {}", k);
-                    }
-                    None => {
-                        println!("No command");
-                    }
-                }
+                println!("Task: {:?}", &task.cmd);
+                execute_task(&mut session, task);
+                // match task.command {
+                //     Some(c) => {
+                //         s = execute_task(&mut session, &c).unwrap();
+                //         //    println!("{}", s);
+                //         println!("Task: {}", k);
+                //         println!("Config: {}", k);
+                //     }
+                //     None => {
+                //         println!("No command");
+                //     }
+                // }
             }
             None => match config.config.clone() {
                 Some(cfg) => {
                     let user = User::new(cfg.user.clone().unwrap(), cfg.password.clone().unwrap());
                     let connection = Connection::new(cfg.host.clone().unwrap(), cfg.port.unwrap());
                     session = ssh_connect(user, connection);
-                    match task.command {
-                        Some(c) => {
-                            s = execute_task(&mut session, &c).unwrap();
-                            // println!("{}", s);
-                            println!("Task: {}", k);
-                            println!("Default Config",);
-                        }
-                        None => {
-                            println!("No command");
-                        }
-                    }
+
+                    println!("Task: {:?}", task);
+
+                    // match task.command {
+                    //     Some(c) => {
+                    //         s = execute_task(&mut session, &c).unwrap();
+                    //         // println!("{}", s);
+                    //         println!("Task: {}", k);
+                    //         println!("Default Config",);
+                    //     }
+                    //     None => {
+                    //         println!("No command");
+                    //     }
+                    // }
                 }
                 None => {
                     println!("No config");
@@ -147,6 +154,18 @@ pub fn start(c: TomlConfig) {
         }
     }
 }
+pub fn execute_task(session: &mut Session, task: parser::Task) {
+    let c = task.cmd;
 
+    for (k, v) in c.iter() {
+        if k == "builtin" {
+            exec_cmd(v);
+        } else {
+            println!("Not a builtin: {}", k);
+        }
+    }
+}
+
+pub fn exec_cmd(cmd: fn(parser::Cmd)) {}
 fn match_user(conf: parser::Config, session: &mut Session) {}
 //fn read_config() {}

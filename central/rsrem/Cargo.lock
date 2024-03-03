@@ -2225,6 +2225,7 @@ dependencies = [
  "crossbeam-epoch",
  "crossbeam-queue",
  "crypto",
+ "crypto-common",
  "curl",
  "dns-lookup",
  "flexi_logger",

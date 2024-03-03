@@ -4,18 +4,19 @@ user = "jonas"
 password = "Artemis34!!"
 port = 22
 
-[group.A]
+[group.B]
 host = "127.0.0.1"
 user = "jonas"
 password = "Artemis34!!"
 port = 22
 
 [task.B]
-command = "ls"
+name = "test"
+cmd.builtin.shell = { name = "bash", args = ["-c", "ls"] }
 
-[task.A]
-command = "ls"
-
-
-[task.C]
-#command = "ls"
+# [task.A]
+# command = "ls"
+#
+#
+# [task.C]
+# #command = "ls"
